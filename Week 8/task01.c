@@ -13,10 +13,10 @@ int main(void){
     close(filedesc1);
     err(2, "Unable to open the second file!");
   }
-  chat symbol;
+  char symbol;
   int res;
-  while((res = read(filedesc1, symbol, sizeof(char))) == 1){
-    if(write(filedesc2, symbol, sizeof(char)) != res){
+  while((res = read(filedesc1, &symbol, sizeof(char))) == 1){
+    if(write(filedesc2, &symbol, sizeof(char)) != res){
       close(filedesc1);
       close(filedesc2);
       err(3, "Error while writing to file!");
