@@ -5,6 +5,7 @@
 #include <errno.h>
 #include <sys/stat.h>
 #include <stdio.h>
+#include <fcntl.h>
 
 int safeOpen(char* fileName, int flags){
       int fd;
