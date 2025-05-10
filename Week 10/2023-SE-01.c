@@ -48,7 +48,7 @@ int safeOpen(char* fileName, int flags){
   }
 
 int main(int argc, char** argv){
-  if(agrc != 3){
+  if(argc != 3){
     errx(1, "invalid number of args!");
   }
   int stream, message;
@@ -56,11 +56,11 @@ int main(int argc, char** argv){
   message = safeOpenCreate(argv[2], O_CREAT | O_TRUNC | O_WRONLY, 0666);
 
   uint8_t read_byte;
-  uint8_t check_sum;
   off_t currPos = 0;
   while(safeRead(stream, &read_byte, 1)){
-    if(read_byte == Ox55){
-      check_sum ^= read_byte;
+    if(read_byte == 0x55){
+      uint8_t check_sum;
+      check_sum = read_byte;
       uint8_t n;
       safeRead(stream, &n, 1);
       check_sum ^= n;
@@ -70,7 +70,7 @@ int main(int argc, char** argv){
       }
       safeRead(stream, &read_byte, 1);
       if(check_sum == read_byte){
-        safeLSeek(stream, currPos, SEEK_SET);
+        safeLseek(stream, currPos, SEEK_SET);
         for(int i=0;i<n+3;++i){
           safeRead(stream, &read_byte, 1);
           safeWrite(message, &read_byte, 1);
